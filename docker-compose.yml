@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  coordinator:
+    build:
+      context: ./coordinator
+    ports:
+      - "8000:8000"
+    networks:
+      - central_net
+
+  process1:
+    build:
+      context: ./process
+    environment:
+      - PROCESS_ID=1
+    depends_on:
+      - coordinator
+    networks:
+      - central_net
+
+  process2:
+    build:
+      context: ./process
+    environment:
+      - PROCESS_ID=2
+    depends_on:
+      - coordinator
+    networks:
+      - central_net
+
+networks:
+  central_net:
+    driver: bridge
